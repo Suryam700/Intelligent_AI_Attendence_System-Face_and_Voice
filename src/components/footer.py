@@ -6,3 +6,10 @@ def footer_home():
                     <p style="font-weight:bold; color:white;"> Created with ❤️ by <a href="https://github.com/Suryam700" style="color: #fff; text-decoration: none;">Suryam Gahoi</a></p>  
                 </div>
                 """, unsafe_allow_html=True)
+    
+def footer_dashboard():
+    st.markdown("""
+                <div style="margin-top:2rem; display:flex; gap:6px; justify-content:center; items-align:center">
+                    <p style="font-weight:bold; color:#000;"> Created with ❤️ by <a href="https://github.com/Suryam700" style="color: #000; text-decoration: none;">Suryam Gahoi</a></p>  
+                </div>
+                """, unsafe_allow_html=True)
