@@ -13,12 +13,12 @@ def get_voice_embedding(audio_bytes):
     try:
         encoder = load_voice_encoder()
 
-        audio, _ = librosa.load(io.BytesIO(audio_bytes), sr=16_000) 
+        audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=16000) 
         wav = preprocess_wav(audio)
         embedding = encoder.embed_utterance(wav)
         return embedding.tolist()
     except Exception as e:
-        st.error("Voice Recog. error")
+        st.error('Voice Recog. error')
         return None
     
 def identify_speaker(new_embedding, candidates_dict, threshold=0.65):
@@ -26,9 +26,9 @@ def identify_speaker(new_embedding, candidates_dict, threshold=0.65):
         return None, 0.0
     
     best_stud_id = None
-    best_score = -1
+    best_score = -1.0
 
-    for stud_id, stored_embedding in candidates_dict.item():
+    for stud_id, stored_embedding in candidates_dict.items():
         if stored_embedding:
             similarity = np.dot(new_embedding, stored_embedding)
             if similarity > best_score:

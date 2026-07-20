@@ -9,7 +9,7 @@ import streamlit as st
 def load_dlib_models():
     detector = dlib.get_frontal_face_detector()
 
-    sp = dlib.shape_predicter(
+    sp = dlib.shape_predictor(
         face_recognition_models.pose_predictor_model_location()
     )
 
@@ -27,7 +27,7 @@ def get_face_embeddings(np_image):
 
     for face in faces:
         shape = sp(np_image, face)
-        face_descriptor = face_recog.compute_face_descriptor(np_image, face, 1) # => 128D embedding's
+        face_descriptor = face_recog.compute_face_descriptor(np_image, shape, 1) # => 128D embedding's
 
         encodings.append(np.array(face_descriptor))
 
