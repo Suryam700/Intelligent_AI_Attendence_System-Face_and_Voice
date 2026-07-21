@@ -20,12 +20,12 @@ def teacher_login(username, password):
     response = supabase.table("teachers").select("*").eq("username", username).execute()
     if response.data:
         teacher = response.data[0]
-        if check_pass(password, teacher["password"]):
+        if check_pass(password, teacher['password']):
             return teacher
     return None
 
 def get_all_students():
-    response = supabase.table("students").select("*").execute()
+    response = supabase.table('students').select("*").execute()
     return response.data
 
 def create_student(new_name, face_embedding=None , voice_embedding=None):
@@ -35,5 +35,5 @@ def create_student(new_name, face_embedding=None , voice_embedding=None):
         "voice_embedding": voice_embedding
     }
 
-    response = supabase.table("students").insert(data).execute()
+    response = supabase.table('students').insert(data).execute()
     return response.data
