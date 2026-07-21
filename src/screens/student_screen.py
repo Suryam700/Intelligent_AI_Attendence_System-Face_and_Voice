@@ -11,7 +11,9 @@ from src.database.db import get_all_students, create_student
 
 
 def student_dashboard():
-    st.write("Dashboard Here!")
+    style_background_dashboard()
+    style_base_layout()
+    st.header("Dashboard Here!")
 
 def student_screen():
     style_background_dashboard()
@@ -21,7 +23,7 @@ def student_screen():
         student_dashboard()
         return
 
-    col1, col2 = st.columns(2, gap="xxlarge", vertical_alignment="center")
+    col1, col2 = st.columns(2, gap='xxlarge', vertical_alignment='center')
     
     with col1:
         header_dashboard()
@@ -49,11 +51,11 @@ def student_screen():
                 if detected:
                     student_id = list(detected.keys())[0]
                     all_students = get_all_students()
-                    student = next((student for student in all_students if student["student_id"] == student_id), None)
+                    student = next((student for student in all_students if student['student_id'] == student_id), None)
 
                     if student:
                         st.session_state.is_logged_in = True
-                        st.session_state.user_role = "student"
+                        st.session_state.user_role = 'student'
                         st.session_state.student_data = student
                         st.toast(f"Welcome Back! {student['name']}")
                         time.sleep(1); st.rerun()
@@ -74,7 +76,7 @@ def student_screen():
             try:
                 audio_data = st.audio_input("Record a short phrase like 'I'm present, My name is Suryam Gahoi.'")
             except Exception as e:
-                st.error("Audio not fetch! Try again")
+                st.error("Audio not fetch!")
 
             if st.button("Create Account", type="primary"):
                 if new_name:
@@ -92,8 +94,8 @@ def student_screen():
                             if response_data:
                                 train_classifier()
                                 st.session_state.is_logged_in = True
-                                st.session_state.user_role = "student"
-                                st.session_state.student_data = response_data[0 ]
+                                st.session_state.user_role = 'student'
+                                st.session_state.student_data = response_data[0]
                                 st.toast(f"Profile Created! Hi, {new_name}")
                                 time.sleep(1); st.rerun()
                         else:

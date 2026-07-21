@@ -44,7 +44,7 @@ def process_bulk_audio(audio_bytes, candidates_dict, threshold=0.65):
     try:
         encoder = load_voice_encoder()
 
-        audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=16_000)
+        audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=16000)
         segments = librosa.effects.split(audio, top_db=30)
 
         identified_results = {}
