@@ -64,7 +64,8 @@ def teacher_dashboard():
     if st.session_state.current_teacher_tab == "take_attendence":
         teacher_tab_take_attendence()
     elif st.session_state.current_teacher_tab == "manage_subjects":
-        teacher_tab_manage_subjects()
+        # teacher_tab_manage_subjects()
+        pass
     elif st.session_state.current_teacher_tab == "attendence_records":
         teacher_tab_attendence_report()
         
@@ -72,41 +73,41 @@ def teacher_tab_take_attendence():
     st.header("Take Attendence")
 
 
-def teacher_tab_manage_subjects():
-    teacher_id = st.session_state.teacher_data['teacher_id']
+# def teacher_tab_manage_subjects():
+#     teacher_id = st.session_state.teacher_data['teacher_id']
 
-    col1, col2 = st.columns(2)
+#     col1, col2 = st.columns(2)
 
-    with col1:
-        st.header("Manage Subjects")
-    with col2:
-        if st.button("Create New Subjects", width="stretch"):
-            create_subject_dialog(teacher_id)
+#     with col1:
+#         st.header("Manage Subjects")
+#     with col2:
+#         if st.button("Create New Subjects", width="stretch"):
+#             create_subject_dialog(teacher_id)
 
-    # list all subjects
-    subjects = get_teacher_subjects(teacher_id)
-    if subjects:
-        for sub in subjects:
-            stats = [
-                ("🫂", "Students", sub['total_students']),
-                ("🕰️", "Classes", sub['total_classes'])
-            ]
+#     # list all subjects
+#     subjects = get_teacher_subjects(teacher_id)
+#     if subjects:
+#         for sub in subjects:
+#             stats = [
+#                 ("🫂", "Students", sub['total_students']),
+#                 ("🕰️", "Classes", sub['total_classes'])
+#             ]
         
-        def share_btn():
-            if st.button(f"Share code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
-                share_subject_dialog(sub['name'], sub['subject_code'])
-            st.space()
+#             def share_btn():
+#                 if st.button(f"Share code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
+#                     share_subject_dialog(sub['name'], sub['subject_code'])
+#                 st.space()
 
-        sunject_card(
-            name=sub['name'],
-            code=sub['subject_code'],
-            section=sub['section'],
-            stats=stats,
-            footer_callback=share_btn
-        )
+#             sunject_card(
+#                 name=sub['name'],
+#                 code=sub['subject_code'],
+#                 section=sub['section'],
+#                 stats=stats,
+#                 footer_callback=share_btn
+#             )
 
-    else:
-        st.info("NO SUBJECT FOUND! CREATE ONE ABOVE.")
+#     else:
+#         st.info("NO SUBJECT FOUND! CREATE ONE ABOVE.")
 
 def teacher_tab_attendence_report():
     st.header("Attendence Record")
