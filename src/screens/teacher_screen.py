@@ -3,7 +3,8 @@ import time
 from src.components.header import header_dashboard
 from src.components.footer import footer
 from src.UI.base_layout import style_background_dashboard, style_base_layout
-from src.database.db import check_teacher_exists, create_teacher, teacher_login
+from src.database.db import check_teacher_exists, create_teacher, teacher_login, get_teacher_subjects
+from src.components.dialog_create_subject import create_subject_dialog
 
 def teacher_screen():
     style_background_dashboard()
@@ -61,11 +62,54 @@ def teacher_dashboard():
     st.divider()
 
     if st.session_state.current_teacher_tab == "take_attendence":
-        st.header("Take Attendence")
+        teacher_tab_take_attendence()
     elif st.session_state.current_teacher_tab == "manage_subjects":
-        st.header("Manage Subjects")
+        teacher_tab_manage_subjects()
     elif st.session_state.current_teacher_tab == "attendence_records":
-        st.header("Attendence Record")
+        teacher_tab_attendence_report()
+        
+def teacher_tab_take_attendence():
+    st.header("Take Attendence")
+
+
+def teacher_tab_manage_subjects():
+    teacher_id = st.session_state.teacher_data['teacher_id']
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.header("Manage Subjects")
+    with col2:
+        if st.button("Create New Subjects", width="stretch"):
+            create_subject_dialog(teacher_id)
+
+    # list all subjects
+    subjects = get_teacher_subjects(teacher_id)
+    if subjects:
+        for sub in subjects:
+            stats = [
+                ("🫂", "Students", sub['total_students']),
+                ("🕰️", "Classes", sub['total_classes'])
+            ]
+        
+        def share_btn():
+            if st.button(f"Share code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
+                share_subject_dialog(sub['name'], sub['subject_code'])
+            st.space()
+
+        sunject_card(
+            name=sub['name'],
+            code=sub['subject_code'],
+            section=sub['section'],
+            stats=stats,
+            footer_callback=share_btn
+        )
+
+    else:
+        st.info("NO SUBJECT FOUND! CREATE ONE ABOVE.")
+
+def teacher_tab_attendence_report():
+    st.header("Attendence Record")
 
 def login_teacher(username, password):
     if not username or not password:
