@@ -44,19 +44,19 @@ def get_trained_model():
         return None
     else:
         for student in student_db:
-            embedding = student.get('face_emedding')
+            embedding = student.get('face_embedding')
             if embedding:
                 X.append(np.array(embedding))
                 y.append(student.get('student_id'))
     if len(X) == 0: 
-        return 0
+        return None
 
     clf = SVC(kernel="linear", probability=True, class_weight="balanced")
 
     try:
         clf.fit(X, y)
     except ValueError:
-        pass
+        return None
 
     return {
         'clf': clf,
@@ -91,7 +91,7 @@ def predict_attendance(np_cls_image):
         else:
             predicted_id = int(all_students[0])
 
-        student_embedding = X_train(y_train.index(predicted_id))
+        student_embedding = X_train[y_train.index(predicted_id)]
 
         best_match_score = np.linalg.norm(student_embedding - encoding)
 
