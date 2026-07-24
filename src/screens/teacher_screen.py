@@ -31,7 +31,7 @@ def teacher_dashboard():
     with col1:
         header_dashboard()
     with col2:
-        st.subheader(f"Welcome, {teacher_data['name']}")
+        st.subheader(f"Welcome, {teacher_data['teacher_name']}")
         if st.button("Logout", key="loginBackBtn", shortcut="control+backspace"):
             st.session_state['is_logged_in'] = False
             del st.session_state.teacher_data
@@ -72,6 +72,7 @@ def teacher_dashboard():
         teacher_tab_attendence_report()
         
 def teacher_tab_take_attendence():
+    teacher_id = st.session_state.teacher_data['teacher_id']
     st.header("Take Attendence")
 
 
