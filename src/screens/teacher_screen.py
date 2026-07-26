@@ -8,6 +8,9 @@ from src.components.dialog_create_subject import create_subject_dialog
 from src.components.subject_card import subject_card
 from src.components.dialog_share_subject import share_subject_dialog
 from src.components.dialog_add_photo import add_photos_dialog
+import numpy as np
+from src.pipelines.face_pipeline import predict_attendance
+from src.database.config import supabase
 
 def teacher_screen():
     style_background_dashboard()
@@ -98,6 +101,41 @@ def teacher_tab_take_attendence():
 
         selected_subject_id = subject_options[selected_subject_label]
         st.divider()
+
+        if st.session_state.attendance_images:
+            st.header('Add Photos')
+            gallery_cols = st.columns(4)
+
+            for idx, img in enumerate(st.session_state.attendance_images):
+                with gallery_cols[idx % 4]:
+                    st.image(img, width='stretch', caption=f"Photo {idx+1}")
+
+            c1, c2, c3  = st.columns(3)
+
+            with c1:
+                if st.button('Clear All Photos', width='stretch', type='tertiary', icon=':material/delete:'):
+                    st.session_state.attendance_images = []; st.rerun()
+
+            with c2:
+                has_photos = bool(st.session_state.attendance_images)
+                if st.button('Run Face Analysis', width='stretch', type='secondary', icon=':material/analytics:'):
+                    with st.spinner('Deep Scanning classroom photos...'):
+                        all_detected_id = {}
+
+                        for idx, img in enumerate(st.session_state.attendance_images):
+                            np_img = np.array(img.convert('RGB'))
+
+                            detected, _, _ = predict_attendance()
+
+                            if detected:
+                                for stud_id in detected.keys():
+                                    student_id = int(stud_id)
+
+                                    all_detected_id.setdefault(student_id, []).append(f'Photo {idx+1}')
+
+                        enrolled_res = supabase
+
+
 
 
 
