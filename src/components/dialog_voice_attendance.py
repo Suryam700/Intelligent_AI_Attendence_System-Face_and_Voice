@@ -12,7 +12,7 @@ def voice_attendance_dialog(sub_id):
     audio_data = None
     audio_data = st.audio_input('Record Classrom Audio')
 
-    if st.button('Analyze Video', width='stretch', type='primary', icon=':material/frame_inspect:'):
+    if st.button('Analyze Voice', width='stretch', type='primary', icon=':material/frame_inspect:'):
         with st.spinner('Processing Audio Data'):
 
             enrolled_res = supabase.table('subject_students').select('*, students(*)').eq('subject_id', sub_id).execute()
